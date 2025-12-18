@@ -4,9 +4,7 @@ function initTOC() {
   const tocEl = document.getElementById("toc");
   if (!tocEl) return;
 
-  const sections = Array.from(
-    document.querySelectorAll(".deck-section")
-  );
+  const sections = Array.from(document.querySelectorAll(".deck-section"));
 
   if (sections.length === 0) return;
 
@@ -17,6 +15,8 @@ function initTOC() {
 
   const list = document.createElement("ul");
   list.className = "toc-list";
+
+  const tocLinks = [];
 
   sections.forEach((section, index) => {
     const titleEl = section.querySelector(".section-title");
@@ -41,6 +41,7 @@ function initTOC() {
     link.appendChild(codeSpan);
     link.appendChild(labelSpan);
     li.appendChild(link);
+    tocLinks.push(link);
     list.appendChild(li);
 
     link.addEventListener("click", (event) => {
@@ -54,13 +55,36 @@ function initTOC() {
       });
 
       // Explicitly manage active state on click
-      const allLinks = tocEl.querySelectorAll(".toc-link");
-      allLinks.forEach((l) => l.classList.remove("active"));
+      tocLinks.forEach((l) => l.classList.remove("active"));
       link.classList.add("active");
     });
   });
 
   tocEl.appendChild(list);
+
+  // Highlight current section while scrolling (top-most visible wins)
+  const setActiveByScroll = () => {
+    const scrollY = window.scrollY || window.pageYOffset;
+    const offset = 40;
+    let currentId = sections[0]?.dataset.sectionId;
+
+    sections.forEach((section) => {
+      if (section.offsetTop - offset <= scrollY) {
+        currentId = section.dataset.sectionId;
+      }
+    });
+
+    if (!currentId) return;
+
+    tocLinks.forEach((link) => {
+      const match = link.dataset.targetId === currentId;
+      link.classList.toggle("active", match);
+    });
+  };
+
+  window.addEventListener("scroll", setActiveByScroll, { passive: true });
+  // Set initial state
+  setActiveByScroll();
 }
 
 document.addEventListener("DOMContentLoaded", initTOC);
