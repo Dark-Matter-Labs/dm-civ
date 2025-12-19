@@ -57,6 +57,12 @@ function initTOC() {
       // Explicitly manage active state on click
       tocLinks.forEach((l) => l.classList.remove("active"));
       link.classList.add("active");
+
+      // Update URL hash so sections are easily shareable
+      const id = section.dataset.sectionId;
+      if (id) {
+        history.replaceState(null, "", `#${id}`);
+      }
     });
   });
 

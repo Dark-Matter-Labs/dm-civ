@@ -301,6 +301,16 @@ a:hover {
   line-height: 1.7;
 }
 
+.hero-body-compact {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--fg-comment);
+}
+
+.hero-body-compact strong {
+  color: var(--fg);
+}
+
 .code-inline {
   font-size: 13px;
   padding: 2px 6px;
@@ -441,6 +451,37 @@ a:hover {
   font-size: 13px;
   color: var(--fg-muted);
   line-height: 1.6;
+}
+
+.reflection {
+  margin-top: 14px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  border: 1px dashed var(--border-code);
+}
+
+.reflection-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fg-comment);
+  margin: 0 0 6px;
+}
+
+.reflection-title::before {
+  content: "? ";
+  font-weight: 600;
+}
+
+.reflection ul {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
+}
+
+.reflection li {
+  margin-bottom: 4px;
 }
 
 /* ----------
