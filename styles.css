@@ -262,6 +262,23 @@ a:hover {
   font-weight: 600;
 }
 
+.section-break {
+  margin-top: 28px;
+  margin-bottom: 4px;
+  border-top: 1px solid var(--border-code);
+  position: relative;
+}
+
+.section-break-label {
+  position: absolute;
+  top: -8px;
+  left: 0;
+  padding-right: 8px;
+  font-size: 11px;
+  color: var(--fg-comment);
+  background: var(--bg-elevated);
+}
+
 .hero-kicker::before {
   content: "// ";
   color: var(--fg-comment);
