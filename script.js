@@ -1,6 +1,9 @@
 // Build a small "deck as code" table of contents and scroll behavior
 
 function initTOC() {
+  const pageRoot = document.getElementById("page-root");
+  if (!pageRoot) return;
+
   const tocEl = document.getElementById("toc");
   if (!tocEl) return;
 
@@ -93,6 +96,55 @@ function initTOC() {
   setActiveByScroll();
 }
 
-document.addEventListener("DOMContentLoaded", initTOC);
+function initPasswordGate() {
+  const PASSWORD = "darkmatterm@gic";
+  const gate = document.getElementById("password-gate");
+  const pageRoot = document.getElementById("page-root");
+  const form = document.getElementById("password-form");
+  const input = document.getElementById("password-input");
+  const errorEl = document.getElementById("password-error");
+
+  if (!pageRoot) {
+    initTOC();
+    return;
+  }
+
+  if (!gate || !form || !input) {
+    pageRoot.hidden = false;
+    initTOC();
+    return;
+  }
+
+  const unlock = () => {
+    if (gate) {
+      gate.style.display = "none";
+    }
+    pageRoot.hidden = false;
+    sessionStorage.setItem("cof:unlocked", "1");
+    initTOC();
+  };
+
+  const alreadyUnlocked = sessionStorage.getItem("cof:unlocked") === "1";
+  if (alreadyUnlocked) {
+    unlock();
+    return;
+  }
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const value = input.value || "";
+    if (value === PASSWORD) {
+      if (errorEl) errorEl.textContent = "";
+      unlock();
+    } else if (errorEl) {
+      errorEl.textContent = "Incorrect password. Please try again.";
+    }
+  });
+
+  // Focus input on load
+  input.focus();
+}
+
+document.addEventListener("DOMContentLoaded", initPasswordGate);
 
 

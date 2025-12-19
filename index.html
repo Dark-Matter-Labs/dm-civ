@@ -11,7 +11,31 @@
     <link rel="stylesheet" href="./styles.css?v=2" />
   </head>
   <body>
-    <div class="page">
+    <div class="password-gate" id="password-gate">
+      <div class="password-gate-inner">
+        <div class="password-gate-card">
+          <p class="password-gate-kicker">// Restricted draft</p>
+          <h1 class="password-gate-title">Civilization Options Fund</h1>
+          <p class="password-gate-body">
+            This is a private working deck. Please enter the access password to continue.
+          </p>
+          <form id="password-form" class="password-form">
+            <label class="password-label" for="password-input">Access key</label>
+            <input
+              id="password-input"
+              type="password"
+              class="password-input"
+              autocomplete="current-password"
+              spellcheck="false"
+            />
+            <button type="submit" class="password-button">Enter</button>
+            <p class="password-error" id="password-error" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="page" id="page-root" hidden>
       <aside class="sidebar">
         <div class="brand">
           <div class="brand-mark">CIV</div>
@@ -1239,7 +1263,7 @@
       </main>
     </div>
 
-    <script src="./script.js"></script>
+    <script src="./script.js?v=2"></script>
   </body>
 </html>
 
