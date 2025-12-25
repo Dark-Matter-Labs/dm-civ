@@ -28,20 +28,28 @@ async function hydrateFromCMS() {
   if (!projectId || !dataset) return; // CMS not configured, skip
 
   try {
+    // Query published documents only (exclude drafts)
     const query =
-      '*[_type == "deckSection"]{sectionId, title, subtitle, bodyHtml, reflectionTitle, reflectionItems, order}|order(order asc)';
+      '*[_type == "deckSection" && !(_id in path("drafts.**"))]{sectionId, title, subtitle, bodyHtml, reflectionTitle, reflectionItems, order}|order(order asc)';
     const encodedQuery = encodeURIComponent(query);
-    const url = `https://${projectId}.api.sanity.io/v${apiVersion}/data/query/${dataset}?query=${encodedQuery}`;
+    // Use CDN endpoint which has more permissive CORS
+    const url = `https://${projectId}.apicdn.sanity.io/v${apiVersion}/data/query/${dataset}?query=${encodedQuery}`;
 
     const res = await fetch(url);
     if (!res.ok) {
       // eslint-disable-next-line no-console
-      console.warn("CMS fetch failed", res.status);
+      console.warn("CMS fetch failed", res.status, res.statusText);
+      const text = await res.text();
+      // eslint-disable-next-line no-console
+      console.warn("Response:", text);
       return;
     }
 
     const data = await res.json();
     const items = data.result || [];
+
+    // eslint-disable-next-line no-console
+    console.log(`Loaded ${items.length} sections from Sanity`);
 
     items.forEach((item) => {
       if (!item.sectionId) return;
@@ -91,6 +99,8 @@ async function hydrateFromCMS() {
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error("Error hydrating from CMS", err);
+    // eslint-disable-next-line no-console
+    console.error("ProjectId:", projectId, "Dataset:", dataset);
   }
 }
 
