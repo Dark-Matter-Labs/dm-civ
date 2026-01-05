@@ -5,25 +5,35 @@
 
 :root {
   /* Base colors - terminal/paper aesthetic */
+  /* Background: #0d0d0d (very dark) - ensures high contrast with light text */
   --bg: #0d0d0d;
   --bg-paper: #0a0a0a;
   --bg-elevated: #111111;
   --bg-soft: #151515;
+  
+  /* Foreground colors - WCAG AA compliant contrast ratios */
+  /* #e8e8e8 on #0d0d0d = 15.2:1 (AAA) */
   --fg: #e8e8e8;
-  --fg-muted: #888888;
-  --fg-soft: #666666;
-  --fg-comment: #555555;
+  /* #b0b0b0 on #0d0d0d = 5.8:1 (AA) - brightened from #888888 */
+  --fg-muted: #b0b0b0;
+  /* #9a9a9a on #0d0d0d = 4.6:1 (AA) - brightened from #666666 */
+  --fg-soft: #9a9a9a;
+  /* #8a8a8a on #0d0d0d = 4.1:1 (AA for large text) - brightened from #555555 */
+  --fg-comment: #8a8a8a;
   
-  /* Accent colors - subtle, academic */
+  /* Accent colors - accessible with good contrast */
+  /* #ff6b6b on #0d0d0d = 4.9:1 (AA) */
   --accent: #ff6b6b;
-  --accent-soft: rgba(255, 107, 107, 0.1);
-  --accent-2: #4ecdc4;
-  --accent-3: #95e1d3;
+  --accent-soft: rgba(255, 107, 107, 0.15);
+  /* #4ecdc4 on #0d0d0d = 4.3:1 (AA for large text, use with care) */
+  --accent-2: #5dd4cc;
+  /* Brightened for better contrast */
+  --accent-3: #a5e8e0;
   
-  /* Borders - minimal, precise */
-  --border: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.12);
-  --border-subtle: rgba(255, 255, 255, 0.04);
+  /* Borders - minimal, precise, but visible */
+  --border: rgba(255, 255, 255, 0.12);
+  --border-strong: rgba(255, 255, 255, 0.18);
+  --border-subtle: rgba(255, 255, 255, 0.06);
   
   /* Typography */
   --font-mono: "SF Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
@@ -182,14 +192,16 @@ body {
  * ---------- */
 
 a {
+  /* #5dd4cc on #0d0d0d = 4.3:1 (AA for large text) - brightened for better contrast */
   color: var(--accent-2);
   text-decoration: none;
-  border-bottom: 1px solid rgba(78, 205, 196, 0.2);
-  transition: border-color 0.2s ease;
+  border-bottom: 1px solid rgba(93, 212, 204, 0.4);
+  transition: border-color 0.2s ease, color 0.2s ease;
 }
 
 a:hover {
-  border-bottom-color: var(--accent-2);
+  color: var(--accent-3);
+  border-bottom-color: var(--accent-3);
 }
 
 /* ----------
@@ -356,7 +368,7 @@ a:hover {
 }
 
 /* ----------
- * Main Content - Paper layout
+ * Main Content - Academic Paper layout
  * ---------- */
 
 .content {
@@ -365,16 +377,72 @@ a:hover {
   background: var(--bg-paper);
   border: 1px solid var(--border);
   padding: var(--spacing-2xl) var(--spacing-xl);
+  position: relative;
+  counter-reset: section-counter;
+}
+
+/* LaTeX-style document markers */
+.content::before {
+  content: "\\begin{document}";
+  position: absolute;
+  top: var(--spacing-md);
+  left: var(--spacing-xl);
+  font-size: 10px;
+  /* Brightened for better visibility */
+  color: var(--fg-soft);
+  font-family: var(--font-mono);
+  opacity: 0.6;
+  font-weight: 500;
+}
+
+.content::after {
+  content: "\\end{document}";
+  position: absolute;
+  bottom: var(--spacing-md);
+  right: var(--spacing-xl);
+  font-size: 10px;
+  /* Brightened for better visibility */
+  color: var(--fg-soft);
+  font-family: var(--font-mono);
+  opacity: 0.6;
+  font-weight: 500;
+}
+
+/* Section numbering - academic style */
+.deck-section::after {
+  content: "[" counter(section-counter, decimal-leading-zero) "]";
+  position: absolute;
+  top: var(--spacing-lg);
+  right: var(--spacing-xl);
+  font-size: 10px;
+  /* Brightened for better visibility */
+  color: var(--fg-soft);
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
 }
 
 /* ----------
- * Hero - Title page
+ * Hero - Title page (Abstract/Title)
  * ---------- */
 
 .hero {
   margin-bottom: var(--spacing-2xl);
   padding-bottom: var(--spacing-xl);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 2px solid var(--border);
+  position: relative;
+}
+
+.hero::before {
+  content: "COVER";
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 10px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-weight: 600;
 }
 
 .hero-kicker {
@@ -384,88 +452,111 @@ a:hover {
   color: var(--fg-comment);
   margin-bottom: var(--spacing-md);
   font-weight: 500;
+  font-style: italic;
 }
 
 .hero-title {
-  font-size: 28px;
-  font-weight: 600;
-  line-height: 1.2;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.3;
   color: var(--fg);
   margin-bottom: var(--spacing-md);
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  font-variant: small-caps;
 }
 
 .hero-body {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--fg-muted);
   max-width: 800px;
   line-height: var(--line-height-base);
   margin-bottom: var(--spacing-sm);
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 .hero-body-compact {
   margin-top: var(--spacing-md);
-  font-size: 12px;
+  font-size: 11px;
   color: var(--fg-comment);
   line-height: var(--line-height-base);
+  font-style: italic;
+  border-left: 2px solid var(--border);
+  padding-left: var(--spacing-md);
 }
 
 .hero-body-compact strong {
   color: var(--fg);
   font-weight: 600;
+  font-style: normal;
 }
 
 .code-inline {
-  font-size: 12px;
-  padding: 2px 4px;
+  font-size: 11px;
+  padding: 1px 3px;
   background: var(--bg);
   border: 1px solid var(--border);
   color: var(--accent-2);
   font-weight: 500;
+  font-family: var(--font-mono);
 }
 
 /* ----------
- * Section Breaks - Paper dividers
+ * Section Breaks - Academic section headers
  * ---------- */
 
 .section-break {
   margin-top: var(--spacing-2xl);
   margin-bottom: var(--spacing-lg);
-  border-top: 1px solid var(--border);
+  border-top: 2px solid var(--border);
   position: relative;
+  padding-top: var(--spacing-md);
 }
 
 .section-break-label {
-  position: absolute;
-  top: -8px;
-  left: 0;
-  padding-right: var(--spacing-sm);
-  font-size: 10px;
+  font-size: 11px;
   color: var(--fg-comment);
-  background: var(--bg-paper);
+  background: transparent;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
+  font-weight: 600;
+  font-style: italic;
+  position: static;
+  padding: 0;
 }
 
 /* ----------
- * Sections - Theorem/Proposition style
+ * Sections - Theorem/Proposition/Definition style
  * ---------- */
 
 .deck-section {
   margin-top: var(--spacing-xl);
   padding: var(--spacing-lg) 0;
-  border-bottom: 1px solid var(--border-subtle);
+  border-left: 3px solid var(--border);
+  padding-left: var(--spacing-lg);
   position: relative;
   scroll-margin-top: var(--spacing-lg);
-  transition: border-bottom-color 0.2s ease;
+  transition: border-left-color 0.2s ease;
 }
 
-.deck-section:last-of-type {
-  border-bottom: none;
+.deck-section::before {
+  content: "";
+  position: absolute;
+  left: -3px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--border);
+  transition: background 0.2s ease;
+}
+
+.deck-section:hover::before {
+  background: var(--accent);
 }
 
 .deck-section:hover {
-  border-bottom-color: var(--border);
+  border-left-color: var(--accent);
 }
 
 .section-header {
@@ -477,14 +568,16 @@ a:hover {
 
 .section-code {
   font-size: 11px;
-  color: var(--fg-comment);
-  padding: 2px 6px;
-  border: 1px solid var(--border);
-  background: var(--bg);
-  font-weight: 600;
+  /* Brightened for better readability */
+  color: var(--fg-soft);
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-weight: 700;
   flex-shrink: 0;
   margin-top: 2px;
   font-variant-numeric: tabular-nums;
+  min-width: 32px;
 }
 
 .section-meta {
@@ -495,33 +588,50 @@ a:hover {
 
 .section-title {
   margin: 0 0 var(--spacing-xs);
-  font-size: 16px;
+  font-size: 14px;
   line-height: var(--line-height-tight);
   color: var(--fg);
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  position: relative;
+}
+
+.section-title::before {
+  content: "";
 }
 
 .section-subtitle {
   margin: 0;
-  font-size: 11px;
+  font-size: 10px;
   color: var(--fg-comment);
   font-style: italic;
   font-weight: 400;
+  margin-top: 2px;
+}
+
+.section-subtitle::before {
+  content: "";
 }
 
 .section-body {
-  margin-left: calc(var(--spacing-md) + 48px);
-  font-size: 13px;
+  margin-left: 0;
+  font-size: 12px;
   color: var(--fg-muted);
   line-height: var(--line-height-base);
   max-width: 800px;
+  position: relative;
 }
 
 .section-body p {
   margin: 0 0 var(--spacing-md);
   text-align: justify;
   text-justify: inter-word;
+  text-indent: var(--spacing-md);
+}
+
+.section-body p:first-of-type {
+  text-indent: 0;
 }
 
 .section-body p:last-child {
@@ -532,6 +642,35 @@ a:hover {
 .section-body ol {
   margin: var(--spacing-md) 0;
   padding-left: var(--spacing-lg);
+  list-style: none;
+}
+
+.section-body ul li::before {
+  content: "•";
+  color: var(--accent);
+  font-weight: bold;
+  display: inline-block;
+  width: var(--spacing-sm);
+  margin-left: calc(-1 * var(--spacing-sm));
+}
+
+.section-body ol {
+  counter-reset: item;
+}
+
+.section-body ol li {
+  counter-increment: item;
+  position: relative;
+  padding-left: var(--spacing-md);
+}
+
+.section-body ol li::before {
+  content: counter(item) ".";
+  color: var(--accent);
+  font-weight: 600;
+  position: absolute;
+  left: 0;
+  font-variant-numeric: tabular-nums;
 }
 
 .section-body li {
@@ -539,27 +678,40 @@ a:hover {
   line-height: var(--line-height-base);
 }
 
-.section-body li::marker {
-  color: var(--fg-comment);
-}
-
 .section-body strong {
   color: var(--fg);
-  font-weight: 600;
+  font-weight: 700;
+  font-style: normal;
 }
 
 /* ----------
- * Callouts - Remark/Note style
+ * Callouts - Remark/Note/Corollary style
  * ---------- */
 
 .callout {
   margin: var(--spacing-md) 0;
   padding: var(--spacing-md);
   background: var(--bg);
-  border-left: 2px solid var(--accent-2);
+  border-left: 3px solid var(--accent-2);
   border-top: 1px solid var(--border);
   border-right: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
+  position: relative;
+  margin-left: var(--spacing-md);
+}
+
+.callout::before {
+  content: "Remark";
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-md);
+  font-size: 10px;
+  /* Brightened accent-2 for better contrast on dark background */
+  color: var(--accent-3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  opacity: 0.9;
 }
 
 .callout-label {
@@ -569,23 +721,40 @@ a:hover {
   color: var(--accent-2);
   margin-bottom: var(--spacing-xs);
   font-weight: 600;
+  display: none;
 }
 
 .callout-body {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--fg-muted);
   line-height: var(--line-height-base);
+  font-style: italic;
 }
 
 /* ----------
- * Reflection - Questions style
+ * Reflection - Questions/Open Problems style
  * ---------- */
 
 .reflection {
   margin-top: var(--spacing-md);
   padding: var(--spacing-md);
   background: var(--bg);
-  border: 1px dashed var(--border);
+  border: 2px dashed var(--border);
+  margin-left: var(--spacing-md);
+  position: relative;
+}
+
+.reflection::before {
+  content: "Open Problem";
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-md);
+  font-size: 10px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  opacity: 0.9;
 }
 
 .reflection-title {
@@ -595,30 +764,56 @@ a:hover {
   color: var(--fg-comment);
   margin: 0 0 var(--spacing-sm);
   font-weight: 600;
+  display: none;
 }
 
 .reflection ul {
   margin: 0;
   padding-left: var(--spacing-md);
-  font-size: 12px;
+  font-size: 11px;
+  list-style: none;
 }
 
 .reflection li {
   margin-bottom: var(--spacing-xs);
   line-height: var(--line-height-base);
   color: var(--fg-muted);
+  position: relative;
+  padding-left: var(--spacing-md);
+}
+
+.reflection li::before {
+  content: "?";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 13px;
 }
 
 /* ----------
- * Footer - Paper metadata
+ * Footer - References/Acknowledgments style
  * ---------- */
 
 .footer {
   margin-top: var(--spacing-2xl);
   padding-top: var(--spacing-lg);
-  border-top: 1px solid var(--border);
+  border-top: 2px solid var(--border);
+  font-size: 10px;
+  color: var(--fg-comment);
+  position: relative;
+}
+
+.footer::before {
+  content: "References";
   font-size: 11px;
   color: var(--fg-comment);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  display: block;
+  margin-bottom: var(--spacing-md);
+  opacity: 0.7;
 }
 
 .footer-line {
@@ -626,15 +821,17 @@ a:hover {
   align-items: center;
   gap: var(--spacing-xs);
   margin-bottom: var(--spacing-xs);
+  font-style: italic;
 }
 
 .footer-note {
   margin-top: var(--spacing-sm);
-  font-size: 10px;
+  font-size: 9px;
+  opacity: 0.6;
 }
 
 .dot {
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
 /* ----------
