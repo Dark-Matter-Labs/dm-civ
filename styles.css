@@ -627,10 +627,6 @@ a:hover {
   margin: 0 0 var(--spacing-md);
   text-align: justify;
   text-justify: inter-word;
-  text-indent: var(--spacing-md);
-}
-
-.section-body p:first-of-type {
   text-indent: 0;
 }
 
