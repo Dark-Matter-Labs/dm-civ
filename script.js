@@ -207,7 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initPasswordGate() {
-  const PASSWORD = "darkmatterm@gic";
+  const PASSWORD = "CivOptionsPhase0";
   const gate = document.getElementById("password-gate");
   const pageRoot = document.getElementById("page-root");
   const form = document.getElementById("password-form");
