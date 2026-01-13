@@ -82,6 +82,7 @@ body {
   line-height: var(--line-height-base);
   letter-spacing: -0.01em;
   min-height: 100vh;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 /* ----------
@@ -379,6 +380,7 @@ a:hover {
   padding: var(--spacing-2xl) var(--spacing-xl);
   position: relative;
   counter-reset: section-counter;
+  overflow-x: hidden; /* Prevent horizontal overflow */
 }
 
 /* LaTeX-style document markers */
@@ -443,6 +445,7 @@ a:hover {
   text-transform: uppercase;
   letter-spacing: 0.2em;
   font-weight: 600;
+  pointer-events: none; /* Prevent interaction issues */
 }
 
 .hero-kicker {
@@ -464,6 +467,8 @@ a:hover {
   letter-spacing: -0.02em;
   text-transform: uppercase;
   font-variant: small-caps;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .hero-body {
@@ -524,6 +529,8 @@ a:hover {
   font-style: italic;
   position: static;
   padding: 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 /* ----------
@@ -564,6 +571,7 @@ a:hover {
   align-items: flex-start;
   margin-bottom: var(--spacing-md);
   gap: var(--spacing-md);
+  min-width: 0; /* Prevent flex item overflow */
 }
 
 .section-code {
@@ -584,6 +592,7 @@ a:hover {
   display: flex;
   flex-direction: column;
   flex: 1;
+  min-width: 0; /* Prevent flex item overflow */
 }
 
 .section-title {
@@ -595,6 +604,8 @@ a:hover {
   letter-spacing: 0.01em;
   text-transform: none;
   position: relative;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .section-title::before {
@@ -621,6 +632,8 @@ a:hover {
   line-height: var(--line-height-base);
   max-width: 800px;
   position: relative;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .section-body p {
@@ -639,6 +652,8 @@ a:hover {
   margin: var(--spacing-md) 0;
   padding-left: var(--spacing-lg);
   list-style: none;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .section-body ul li::before {
@@ -672,6 +687,8 @@ a:hover {
 .section-body li {
   margin-bottom: var(--spacing-xs);
   line-height: var(--line-height-base);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .section-body strong {
@@ -862,20 +879,151 @@ a:hover {
     padding: var(--spacing-lg) var(--spacing-md);
   }
 
+  /* Hide decorative pseudo-elements on mobile to prevent overlap */
+  .content::before,
+  .content::after {
+    display: none;
+  }
+
+  .deck-section::after {
+    display: none;
+  }
+
   .hero {
     padding-bottom: var(--spacing-md);
   }
 
+  .hero::before {
+    display: none; /* Hide on mobile to prevent overlap */
+  }
+
   .hero-title {
-    font-size: 24px;
+    font-size: 20px;
+    word-break: break-word;
+    hyphens: auto;
+    line-height: 1.4;
+  }
+
+  .hero-body {
+    text-align: left;
+    text-justify: none;
+  }
+
+  .section-header {
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+  }
+
+  .section-code {
+    min-width: auto;
+  }
+
+  .section-title {
+    font-size: 13px;
+    word-break: break-word;
+    hyphens: auto;
+    line-height: 1.5;
   }
 
   .section-body {
     margin-left: 0;
+    text-align: left;
+    text-justify: none;
+  }
+
+  .section-body p {
+    text-align: left;
+    text-justify: none;
   }
 
   .deck-section {
     padding: var(--spacing-md) 0;
+    padding-left: var(--spacing-md);
+  }
+
+  .section-break-label {
+    font-size: 10px;
+    word-break: break-word;
+    line-height: 1.4;
+  }
+
+  .hero-body-compact {
+    padding-left: var(--spacing-sm);
+    font-size: 10px;
+  }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 480px) {
+  .page {
+    padding: var(--spacing-sm);
+    gap: var(--spacing-sm);
+  }
+
+  .content {
+    padding: var(--spacing-md) var(--spacing-sm);
+  }
+
+  .hero-title {
+    font-size: 18px;
+  }
+
+  .hero-body {
+    font-size: 11px;
+  }
+
+  .hero-body-compact {
+    font-size: 9px;
+    padding-left: var(--spacing-xs);
+    border-left-width: 1px;
+  }
+
+  .section-title {
+    font-size: 12px;
+  }
+
+  .section-body {
+    font-size: 11px;
+  }
+
+  .section-body ul,
+  .section-body ol {
+    padding-left: var(--spacing-md);
+  }
+
+  .section-code {
+    font-size: 10px;
+    min-width: 28px;
+  }
+
+  .deck-section {
+    padding-left: var(--spacing-sm);
+    border-left-width: 2px;
+  }
+
+  .section-break {
+    margin-top: var(--spacing-xl);
+    margin-bottom: var(--spacing-md);
+    padding-top: var(--spacing-sm);
+  }
+
+  .section-break-label {
+    font-size: 9px;
+  }
+
+  .footer {
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-md);
+    font-size: 9px;
+  }
+
+  .brand {
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+  }
+
+  .sidebar {
+    padding: var(--spacing-sm);
   }
 }
 
