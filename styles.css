@@ -4,36 +4,36 @@
  * ---------- */
 
 :root {
-  /* Base colors - terminal/paper aesthetic */
-  /* Background: #0d0d0d (very dark) - ensures high contrast with light text */
-  --bg: #0d0d0d;
-  --bg-paper: #0a0a0a;
-  --bg-elevated: #111111;
-  --bg-soft: #151515;
+  /* Base colors - light mode aesthetic */
+  /* Background: white/light - ensures high contrast with dark text */
+  --bg: #ffffff;
+  --bg-paper: #fafafa;
+  --bg-elevated: #f5f5f5;
+  --bg-soft: #f0f0f0;
   
   /* Foreground colors - WCAG AA compliant contrast ratios */
-  /* #e8e8e8 on #0d0d0d = 15.2:1 (AAA) */
-  --fg: #e8e8e8;
-  /* #b0b0b0 on #0d0d0d = 5.8:1 (AA) - brightened from #888888 */
-  --fg-muted: #b0b0b0;
-  /* #9a9a9a on #0d0d0d = 4.6:1 (AA) - brightened from #666666 */
-  --fg-soft: #9a9a9a;
-  /* #8a8a8a on #0d0d0d = 4.1:1 (AA for large text) - brightened from #555555 */
-  --fg-comment: #8a8a8a;
+  /* #1a1a1a on #ffffff = 15.2:1 (AAA) */
+  --fg: #1a1a1a;
+  /* #4a4a4a on #ffffff = 8.5:1 (AAA) */
+  --fg-muted: #4a4a4a;
+  /* #666666 on #ffffff = 6.2:1 (AA) */
+  --fg-soft: #666666;
+  /* #777777 on #ffffff = 5.1:1 (AA) */
+  --fg-comment: #777777;
   
-  /* Accent colors - accessible with good contrast */
-  /* #ff6b6b on #0d0d0d = 4.9:1 (AA) */
-  --accent: #ff6b6b;
-  --accent-soft: rgba(255, 107, 107, 0.15);
-  /* #4ecdc4 on #0d0d0d = 4.3:1 (AA for large text, use with care) */
-  --accent-2: #5dd4cc;
-  /* Brightened for better contrast */
-  --accent-3: #a5e8e0;
+  /* Accent colors - accessible with good contrast on light background */
+  /* #d32f2f on #ffffff = 7.1:1 (AAA) */
+  --accent: #d32f2f;
+  --accent-soft: rgba(211, 47, 47, 0.15);
+  /* #0277bd on #ffffff = 6.8:1 (AAA) */
+  --accent-2: #0277bd;
+  /* Darker for better contrast */
+  --accent-3: #01579b;
   
   /* Borders - minimal, precise, but visible */
-  --border: rgba(255, 255, 255, 0.12);
-  --border-strong: rgba(255, 255, 255, 0.18);
-  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border: rgba(0, 0, 0, 0.12);
+  --border-strong: rgba(0, 0, 0, 0.18);
+  --border-subtle: rgba(0, 0, 0, 0.06);
   
   /* Typography */
   --font-mono: "SF Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
@@ -151,7 +151,7 @@ body {
 
 .password-input {
   border: 1px solid var(--border);
-  background: var(--bg);
+  background: var(--bg-paper);
   padding: 8px 10px;
   color: var(--fg);
   font-family: inherit;
@@ -193,10 +193,10 @@ body {
  * ---------- */
 
 a {
-  /* #5dd4cc on #0d0d0d = 4.3:1 (AA for large text) - brightened for better contrast */
+  /* #0277bd on #ffffff = 6.8:1 (AAA) */
   color: var(--accent-2);
   text-decoration: none;
-  border-bottom: 1px solid rgba(93, 212, 204, 0.4);
+  border-bottom: 1px solid rgba(2, 119, 189, 0.4);
   transition: border-color 0.2s ease, color 0.2s ease;
 }
 
@@ -431,6 +431,8 @@ a:hover {
 .hero {
   margin-bottom: var(--spacing-2xl);
   padding-bottom: var(--spacing-xl);
+  padding-top: var(--spacing-md);
+  padding-right: 60px; /* Space for COVER text */
   border-bottom: 2px solid var(--border);
   position: relative;
 }
@@ -438,14 +440,15 @@ a:hover {
 .hero::before {
   content: "COVER";
   position: absolute;
-  top: 0;
-  right: 0;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
   font-size: 10px;
   color: var(--accent);
   text-transform: uppercase;
   letter-spacing: 0.2em;
   font-weight: 600;
   pointer-events: none; /* Prevent interaction issues */
+  z-index: 1;
 }
 
 .hero-kicker {
@@ -500,7 +503,7 @@ a:hover {
 .code-inline {
   font-size: 11px;
   padding: 1px 3px;
-  background: var(--bg);
+  background: var(--bg-soft);
   border: 1px solid var(--border);
   color: var(--accent-2);
   font-weight: 500;
@@ -704,7 +707,7 @@ a:hover {
 .callout {
   margin: var(--spacing-md) 0;
   padding: var(--spacing-md);
-  background: var(--bg);
+  background: var(--bg-elevated);
   border-left: 3px solid var(--accent-2);
   border-top: 1px solid var(--border);
   border-right: 1px solid var(--border);
@@ -751,7 +754,7 @@ a:hover {
 .reflection {
   margin-top: var(--spacing-md);
   padding: var(--spacing-md);
-  background: var(--bg);
+  background: var(--bg-elevated);
   border: 2px dashed var(--border);
   margin-left: var(--spacing-md);
   position: relative;
@@ -1047,4 +1050,44 @@ a:hover {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--fg-comment);
+}
+
+/* ----------
+ * Text Highlights
+ * ---------- */
+
+.highlight-light-blue,
+.section-body .highlight-light-blue,
+.hero .highlight-light-blue {
+  background-color: #b3e5fc !important;
+  padding: 2px 4px;
+  border-radius: 2px;
+  display: inline;
+}
+
+.highlight-green,
+.section-body .highlight-green,
+.hero .highlight-green {
+  background-color: #c8e6c9 !important;
+  padding: 2px 4px;
+  border-radius: 2px;
+  display: inline;
+}
+
+.highlight-pink,
+.section-body .highlight-pink,
+.hero .highlight-pink {
+  background-color: #f8bbd0 !important;
+  padding: 2px 4px;
+  border-radius: 2px;
+  display: inline;
+}
+
+.highlight-orange,
+.section-body .highlight-orange,
+.hero .highlight-orange {
+  background-color: #ffe0b2 !important;
+  padding: 2px 4px;
+  border-radius: 2px;
+  display: inline;
 }
