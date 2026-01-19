@@ -894,6 +894,7 @@ a:hover {
 
   .hero {
     padding-bottom: var(--spacing-md);
+    padding-right: var(--spacing-md); /* Reset desktop right padding so content doesn't squeeze on small screens */
   }
 
   .hero::before {
@@ -965,6 +966,10 @@ a:hover {
 
   .content {
     padding: var(--spacing-md) var(--spacing-sm);
+  }
+
+  .hero {
+    padding-right: var(--spacing-sm); /* Extra small screens: minimize side padding to avoid clipping */
   }
 
   .hero-title {
